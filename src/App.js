@@ -61,7 +61,7 @@ export default function App() {
     fetch(`http://www.omdbapi.com/?apikey=${KEY}&s="The Greatest Showman"`)
       .then(res => res.json())
       .then(data => setMovies(data.Search));
-  });
+  }, []);
 
   return (
     <>
