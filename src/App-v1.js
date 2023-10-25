@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const tempMovieData = [
   {
@@ -50,18 +50,10 @@ const tempWatchedData = [
 const average = arr =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const KEY = 'c2e9b79e';
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(tempMovieData);
   const [isOpen, setIsOpen] = useState(true);
-  const [watched, setWatched] = useState([]);
-
-  useEffect(function () {
-    fetch(`http://www.omdbapi.com/?apikey=${KEY}&s="The Greatest Showman"`)
-      .then(res => res.json())
-      .then(data => setMovies(data.Search));
-  });
+  const [watched, setWatched] = useState(tempWatchedData);
 
   return (
     <>
