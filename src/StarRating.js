@@ -27,7 +27,7 @@ export default function StarRating({
   size = 48,
   className = '',
   messages = [],
-  defaultRating = 'sdf',
+  defaultRating = '',
   onSetRating,
 }) {
   const [rating, setRating] = useState(defaultRating);
