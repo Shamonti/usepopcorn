@@ -309,6 +309,24 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
   useEffect(
     function () {
+      const callback = function (e) {
+        if (e.code === 'Escape') {
+          onCloseMovie();
+          console.log('CLOSING');
+        }
+      };
+
+      document.addEventListener('keydown', callback);
+
+      return function () {
+        document.removeEventListener('keydown', callback);
+      };
+    },
+    [onCloseMovie]
+  );
+
+  useEffect(
+    function () {
       async function getMovieDetails() {
         setIsLoading(true);
         const res = await fetch(
@@ -330,6 +348,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
       return function () {
         document.title = 'usePopcorn';
+        console.log(`Using cleanup function for movie ${title}`);
       };
     },
     [title]
