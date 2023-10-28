@@ -103,8 +103,8 @@ export default function App() {
 
           setMovies(data.Search);
         } catch (e) {
-          console.error(e.message);
           if (e.name !== 'AbortError') {
+            // console.log(e.message);
             setError(e.message);
           }
         } finally {
@@ -312,7 +312,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       const callback = function (e) {
         if (e.code === 'Escape') {
           onCloseMovie();
-          console.log('CLOSING');
+          // console.log('CLOSING');
         }
       };
 
@@ -348,7 +348,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
       return function () {
         document.title = 'usePopcorn';
-        console.log(`Using cleanup function for movie ${title}`);
+        // console.log(`Using cleanup function for movie ${title}`);
       };
     },
     [title]
