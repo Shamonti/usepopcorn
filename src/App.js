@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import StarRating from './StarRating';
+import { useMovies } from './useMovies';
 
 const average = arr =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -8,12 +9,12 @@ const KEY = 'c2e9b79e';
 
 export default function App() {
   const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState([]);
-  const [isOpen, setIsOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  // const [isOpen, setIsOpen] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   // const [watched, setWatched] = useState([]);
+
+  const { movies, isLoading, error } = useMovies(query);
+
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem('watched');
 
@@ -45,53 +46,6 @@ export default function App() {
       localStorage.setItem('watched', JSON.stringify(watched));
     },
     [watched]
-  );
-
-  useEffect(
-    function () {
-      const controller = new AbortController();
-
-      async function fetchMovies() {
-        try {
-          setIsLoading(true);
-          setError('');
-
-          const res = await fetch(
-            `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-            { signal: controller.signal }
-          );
-
-          if (!res.ok)
-            throw new Error('There was something wrong while fetching movies.');
-
-          const data = await res.json();
-
-          if (data.Response === 'False') throw new Error('Movie Not Found.');
-
-          setMovies(data.Search);
-        } catch (e) {
-          if (e.name !== 'AbortError') {
-            // console.log(e.message);
-            setError(e.message);
-          }
-        } finally {
-          setIsLoading(false);
-        }
-      }
-
-      if (query.length < 3) {
-        setMovies([]);
-        setError('');
-        return;
-      }
-      handleCloseMovie();
-      fetchMovies();
-
-      return function () {
-        controller.abort();
-      };
-    },
-    [query]
   );
 
   return (
@@ -291,7 +245,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
   const {
     Title: title,
-    Year: year,
+    // Year: year,
     Poster: poster,
     Runtime: runtime,
     imdbRating,
